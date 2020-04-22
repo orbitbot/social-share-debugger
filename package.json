@@ -20,5 +20,9 @@
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-uglify": "6.0.4",
     "wright": "2.0.0-rc3"
+  },
+  "dependencies": {
+    "lz-string": "^1.4.4",
+    "mithril-stream": "^2.0.0"
   }
 }
