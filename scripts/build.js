@@ -8,7 +8,7 @@ const rollup = require('rollup')
     , path = require('path')
 
 const tmp = '_dist'
-    , target = 'dist'
+    , target = 'docs'
 
 fs.removeSync(tmp)
 fs.ensureDirSync(tmp)
