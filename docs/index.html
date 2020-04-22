@@ -4,8 +4,66 @@
   <title>shares.wtf</title>
   <meta charset="utf8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  <script>
+// copypasta from MDN
+if (!Object.entries) {
+  Object.entries = function( obj ) {
+    var ownProps = Object.keys( obj ),
+        i = ownProps.length,
+        resArray = new Array(i); // preallocate the Array
+    while (i--)
+      resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+    return resArray;
+  };
+}
+// copypasta from https://gitlab.com/moongoal/js-polyfill-object.fromentries/
+if (!Object.fromEntries) {
+  Object.defineProperty(Object, 'fromEntries', {
+    value(entries) {
+      if (!entries || !entries[Symbol.iterator]) { throw new Error('Object.fromEntries() requires a single iterable argument'); }
+      const o = {};
+
+      Object.keys(entries).forEach((key) => {
+        const [k, v] = entries[key];
+        o[k] = v;
+      });
+      return o;
+    },
+  });
+}
+
+window.lz = LZString
+window.decompress = lz.decompressFromEncodedURIComponent
+window.compress = lz.compressToEncodedURIComponent
+
+window.appendToHead = (htmlString) => document.head.insertAdjacentHTML('beforeend', htmlString)
+
+window.renderMetaTags = (tags) =>
+  Object
+    .keys(tags)
+    .map((k) => `<meta name="${k}" content="${tags[k]}">`)
+    .join('\n')
+
+window.initialState = {}
+
+window.setHash = (obj) => {
+  window.location.hash = `0=${ compress(JSON.stringify(obj)) }`
+}
+
+if (window.location.hash.length && window.location.hash.indexOf('#0=') === 0) {
+  initialState = JSON.parse(decompress(window.location.hash.slice(3)))
+  if (initialState === null) {
+    initialState = {}
+    console.warn('parsing failed, loading defaults')
+  } else {
+    appendToHead(renderMetaTags(initialState))
+  }
+}
+  </script>
 </head>
-<body>
+<body tabindex="1">
   <script src="index.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

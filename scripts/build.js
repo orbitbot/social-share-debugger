@@ -1,14 +1,14 @@
 const rollup = require('rollup')
-    , commonJs = require('rollup-plugin-commonjs')
-    , nodeResolve = require('rollup-plugin-node-resolve')
-    , uglify = require('rollup-plugin-uglify')
-    , filesize = require('rollup-plugin-filesize')
-    , buble = require('rollup-plugin-buble')
-    , fs = require('fs-extra')
-    , path = require('path')
+const commonJs = require('rollup-plugin-commonjs')
+const nodeResolve = require('rollup-plugin-node-resolve')
+const uglify = require('rollup-plugin-uglify')
+const filesize = require('rollup-plugin-filesize')
+const buble = require('rollup-plugin-buble')
+const fs = require('fs-extra')
+const path = require('path')
 
 const tmp = '_dist'
-    , target = 'docs'
+const target = 'docs'
 
 fs.removeSync(tmp)
 fs.ensureDirSync(tmp)

@@ -14,12 +14,19 @@ b.css({
   body: b`
     m 0
     min-height 100%
+    padding 1em
   `,
   'input, textarea': b`
     font-family inherit
   `,
   '*, *:before, *:after': b`
     boxSizing inherit
+  `,
+  'pre': b`
+    white-space pre-wrap
+  `,
+  'p': b`
+    word-wrap break-word
   `
 })
 

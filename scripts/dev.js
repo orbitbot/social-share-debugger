@@ -1,7 +1,7 @@
 const wright = require('wright')
-    , rollup = require('rollup')
-    , commonJs = require('rollup-plugin-commonjs')
-    , nodeResolve = require('rollup-plugin-node-resolve')
+const rollup = require('rollup')
+const commonJs = require('rollup-plugin-commonjs')
+const nodeResolve = require('rollup-plugin-node-resolve')
 
 wright({
   main: 'assets/index.html',
