@@ -9,8 +9,6 @@ const p = console.log
 window.addEventListener('resize', m.redraw)
 window.addEventListener('orientationchange', m.redraw)
 
-window.addEventListener('load', () => console.log('loaded'))
-
 const tags = stream(initialState)
 tags.map(setHash)
 tags.map(m.redraw)
