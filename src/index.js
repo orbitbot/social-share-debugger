@@ -12,6 +12,7 @@ window.addEventListener('orientationchange', m.redraw)
 const tags = stream(initialState)
 tags.map(setHash)
 tags.map(m.redraw)
+window.tags = tags
 
 const debounce = (func, delay) => {
   let timeout
@@ -21,29 +22,27 @@ const debounce = (func, delay) => {
   }
 }
 
-const Editor = () => {
-  const tagsArray = Object.entries(tags())
-  const syncTags = () => tags(Object.fromEntries(tagsArray))
+const events = ['click', 'keydown', 'touchstart']
+events.map((evt) =>
+  window.addEventListener(evt, debounce(m.redraw, 300) , true)
+)
 
-  const events = ['click', 'keydown', 'touchstart']
-  events.map((evt) =>
-    window.addEventListener(evt, debounce(syncTags, 300) , true)
-  )
-
-  return {
-    view : () =>
-      m('p',
-        tagsArray.map(([k, v], i) =>
-          m('', { key: i },
-            m('input', { value: k, oninput : (e) => tagsArray[i][0] = e.target.value.trim() }),
-            m('input', { value: v, oninput : (e) => tagsArray[i][1] = e.target.value.trim() }),
-            m('button', { onclick : () => { tagsArray.splice(i, 1); syncTags() } } ,'x')
-          )
-        ),
-        m('button', { onclick: () => { tagsArray.push(['', '']); syncTags() } },'+'),
-      )
-  }
-}
+const Editor = () => ({
+  view : () =>
+    m('p',
+      tags().map((tag, i) =>
+        m('', { key: i },
+          Object.entries(tag).map((keyVal, ind) => [
+              m('input', { value : keyVal[0], oninput : (e) => keyVal[0] = e.target.value.trim() }),
+              m('input', { value : keyVal[1], oninput : (e) => keyVal[1] = e.target.value.trim() }),
+            ]
+          ),
+          m('button', { onclick : () => tags(tags().splice(i, 1)) },'x')
+        )
+      ),
+      m('button', { onclick: () => tags(tags().concat({ name: '', content : ''})) },'+'),
+    )
+})
 
 m.mount(document.body, {
   view: () => [

@@ -41,12 +41,11 @@ window.compress = lz.compressToEncodedURIComponent
 window.appendToHead = (htmlString) => document.head.insertAdjacentHTML('beforeend', htmlString)
 
 window.renderMetaTags = (tags) =>
-  Object
-    .keys(tags)
-    .map((k) => `<meta name="${k}" content="${tags[k]}">`)
-    .join('\n')
+  tags.map((tag) =>
+    `<${ Object.entries(tag).map(([k, v]) => `${ k }="${ v }"`).join(' ') }>`
+  ).join('\n')
 
-window.initialState = {}
+window.initialState = []
 
 window.setHash = (obj) => {
   window.location.hash = `0=${ compress(JSON.stringify(obj)) }`
@@ -55,7 +54,7 @@ window.setHash = (obj) => {
 if (window.location.hash.length && window.location.hash.indexOf('#0=') === 0) {
   initialState = JSON.parse(decompress(window.location.hash.slice(3)))
   if (initialState === null) {
-    initialState = {}
+    initialState = []
     console.warn('parsing failed, loading defaults')
   } else {
     appendToHead(renderMetaTags(initialState))
