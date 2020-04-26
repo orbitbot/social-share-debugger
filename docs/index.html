@@ -45,19 +45,17 @@ window.renderMetaTags = (tags) =>
     `<${ Object.entries(tag).map(([k, v]) => `${ k }="${ v }"`).join(' ') }>`
   ).join('\n')
 
-window.initialState = []
-
 window.setHash = (obj) => {
   window.location.hash = `0=${ compress(JSON.stringify(obj)) }`
 }
 
 if (window.location.hash.length && window.location.hash.indexOf('#0=') === 0) {
-  initialState = JSON.parse(decompress(window.location.hash.slice(3)))
-  if (initialState === null) {
-    initialState = []
+  window.initialState = JSON.parse(decompress(window.location.hash.slice(3)))
+  if (window.initialState === null || !window.initialState.length) {
+    window.initialState = ''
     console.warn('parsing failed, loading defaults')
   } else {
-    appendToHead(renderMetaTags(initialState))
+    appendToHead(window.initialState)
   }
 }
   </script>

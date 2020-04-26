@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "lz-string": "^1.4.4",
+    "mergerino": "^0.4.0",
+    "misbehave": "^0.3.0",
     "mithril-stream": "^2.0.0"
   }
 }

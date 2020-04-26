@@ -3,13 +3,16 @@ import './style.js'
 
 import m from 'mithril'
 import stream from 'mithril-stream'
+import misbehave from 'misbehave'
+
+window.misbehave = misbehave
 
 const p = console.log
 
 window.addEventListener('resize', m.redraw)
 window.addEventListener('orientationchange', m.redraw)
 
-const tags = stream(initialState)
+const tags = stream(window.initialState)
 tags.map(setHash)
 tags.map(m.redraw)
 window.tags = tags
@@ -27,31 +30,28 @@ events.map((evt) =>
   window.addEventListener(evt, debounce(m.redraw, 300) , true)
 )
 
-const Editor = () => ({
+const Editor = {
+  oncreate : ({ dom }) => {
+    dom.textContent = tags()
+    misbehave(dom, { oninput : (text) => tags(text) })
+  },
   view : () =>
-    m('p',
-      tags().map((tag, i) =>
-        m('', { key: i },
-          Object.entries(tag).map((keyVal, ind) => [
-              m('input', { value : keyVal[0], oninput : (e) => keyVal[0] = e.target.value.trim() }),
-              m('input', { value : keyVal[1], oninput : (e) => keyVal[1] = e.target.value.trim() }),
-            ]
-          ),
-          m('button', { onclick : () => tags(tags().splice(i, 1)) },'x')
-        )
-      ),
-      m('button', { onclick: () => tags(tags().concat({ name: '', content : ''})) },'+'),
-    )
-})
+    m('code#editor', {
+      contenteditable : true,
+      autocorrect     : 'off',
+      autocapitalize  : 'off',
+      spellcheck      : false
+    })
+}
 
 m.mount(document.body, {
   view: () => [
     m('h1', 'shares.wtf'),
     m('p', m('i', 'minor magic for all your debugging needs')),
     m('h3', 'edit content here'),
-    m(Editor),
-    m('h3', 'preview'),
-    m('p', m('pre', renderMetaTags(tags()))),
+    m('pre', { onclick : () => document.querySelector('#editor').focus() },
+      m(Editor),
+    ),
     m('h3', 'share url'),
     m('p', window.location.href)
   ]

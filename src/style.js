@@ -23,11 +23,40 @@ b.css({
     boxSizing inherit
   `,
   'pre': b`
-    white-space pre-wrap
+    font-family: monospace;
+    outline: 2px dotted #ddd;
+    min-height: 1.9em;
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
   `,
   'p': b`
     word-wrap break-word
-  `
+  `,
+  'code': `
+    display:block;
+    background: none;
+    font-family: monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5em;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+  `,
+  '[contenteditable]': `
+    outline: none;
+  `,
+  '[contenteditable] b': `
+    font-weight: normal;
+  `,
+  '[contenteditable] i': `
+    font-style: normal;
+  `,
 })
 
 b.helper({
